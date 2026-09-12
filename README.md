@@ -17,9 +17,13 @@ A simple dashboard for managing waste bins, truck routes, events, feedback, repo
 🛠️ Built With
 
 • HTML 
+
 • CSS 
+
 • JavaScript 
+
 • React 18 
+
 • Chart.js
 
 📁 Project Structure
