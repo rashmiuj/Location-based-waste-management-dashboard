@@ -2,6 +2,7 @@
 
 A simple dashboard for managing waste bins, truck routes, events, feedback, reports, and waste-level visualization.
 
+
 ✨ Features
 
 - View and add waste bins
@@ -26,6 +27,7 @@ A simple dashboard for managing waste bins, truck routes, events, feedback, repo
 
 • Chart.js
 
+
 📁 Project Structure
 
 Waste-Management-Dashboard/
@@ -38,6 +40,7 @@ Waste-Management-Dashboard/
 
 |-- README.md
 
+
 🚀 Run Locally
 
 Clone or download the project.
@@ -46,4 +49,5 @@ Open the folder in VS Code.
 
 Run index.html using Live Server or open it directly in a browser.
 
-Internet connection is required to load React and Chart.js from CDN.
+
+--> Internet connection is required to load React and Chart.js from CDN.
