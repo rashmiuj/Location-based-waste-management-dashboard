@@ -16,15 +16,19 @@ A simple dashboard for managing waste bins, truck routes, events, feedback, repo
 
 🛠️ Built With
 
-HTML • CSS • JavaScript • React 18 • Chart.js
+• HTML 
+• CSS 
+• JavaScript 
+• React 18 
+• Chart.js
 
 📁 Project Structure
 
 Waste-Management-Dashboard/
-├── index.html
-├── styles.css
-├── app.js
-└── README.md
+|-- index.html
+|-- styles.css
+|-- app.js
+|-- README.md
 
 🚀 Run Locally
 
