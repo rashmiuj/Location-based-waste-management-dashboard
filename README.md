@@ -25,9 +25,13 @@ A simple dashboard for managing waste bins, truck routes, events, feedback, repo
 📁 Project Structure
 
 Waste-Management-Dashboard/
+
 |-- index.html
+
 |-- styles.css
+
 |-- app.js
+
 |-- README.md
 
 🚀 Run Locally
