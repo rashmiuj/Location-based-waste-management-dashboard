@@ -1,18 +1,161 @@
-// ==========================================
-// REACT SETUP
-// ==========================================
-
-const {
-    createElement,
-    useState,
-    useEffect,
-    useRef
-} = React;
+const { useState, useEffect, useRef } = React;
+const e = React.createElement;
 
 
-// ==========================================
-// INITIAL DATA
-// ==========================================
+/* =========================================================
+   BENGALURU AREAS
+   ========================================================= */
+
+const bengaluruAreas = [
+
+    "Adugodi",
+    "Arekere",
+    "Banashankari",
+    "Banaswadi",
+    "Basavanagudi",
+    "Basaveshwaranagar",
+    "Bellandur",
+    "Benson Town",
+    "Bommanahalli",
+    "Bommasandra",
+    "Brookefield",
+    "BTM Layout",
+    "Chamarajpet",
+    "CV Raman Nagar",
+    "Devanahalli",
+    "Domlur",
+    "Electronic City",
+    "Frazer Town",
+    "Girinagar",
+    "HBR Layout",
+    "Hebbal",
+    "Hennur",
+    "Horamavu",
+    "HSR Layout",
+    "Indiranagar",
+    "Jakkur",
+    "Jalahalli",
+    "Jayanagar",
+    "JP Nagar",
+    "Kadugodi",
+    "Kalyan Nagar",
+    "Kammanahalli",
+    "Kengeri",
+    "Koramangala",
+    "KR Puram",
+    "Kumaraswamy Layout",
+    "Mahadevapura",
+    "Malleshwaram",
+    "Marathahalli",
+    "MG Road",
+    "Nagarbhavi",
+    "Nagawara",
+    "Peenya",
+    "Rajajinagar",
+    "Ramamurthy Nagar",
+    "Richmond Town",
+    "RT Nagar",
+    "Sadashivanagar",
+    "Sahakara Nagar",
+    "Sarjapur",
+    "Shivajinagar",
+    "Ulsoor",
+    "Varthur",
+    "Vasanth Nagar",
+    "Vijayanagar",
+    "Whitefield",
+    "Wilson Garden",
+    "Yelahanka",
+    "Yeshwanthpur",
+
+    // Smaller Bengaluru areas
+
+    "Ragigudda",
+    "Ragiguda",
+    "Jayanagar 4th Block",
+    "Jayanagar 9th Block",
+    "JP Nagar 1st Phase",
+    "JP Nagar 2nd Phase",
+    "JP Nagar 6th Phase",
+    "BTM 1st Stage",
+    "BTM 2nd Stage",
+    "Madiwala",
+    "Tavarekere",
+    "Suddaguntepalya",
+    "SG Palya",
+    "Ejipura",
+    "Viveknagar",
+    "Austin Town",
+    "Neelasandra",
+    "Cox Town",
+    "Cooke Town",
+    "Lingarajapuram",
+    "Kacharakanahalli",
+    "HRBR Layout",
+    "Kasturi Nagar",
+    "Benniganahalli",
+    "Dooravani Nagar",
+    "Hoodi",
+    "Kundalahalli",
+    "Munnekollal",
+    "Doddanekundi",
+    "AECS Layout",
+    "Murugeshpalya",
+    "Kodihalli",
+    "HAL",
+    "Jeevan Bima Nagar",
+    "New Thippasandra",
+    "Old Airport Road",
+    "Richmond Circle",
+    "Shantinagar",
+    "Langford Town",
+    "Lalbagh",
+    "Siddapura",
+    "Tilak Nagar",
+    "Bilekahalli",
+    "Hulimavu",
+    "Begur",
+    "Akshayanagar",
+    "Hongasandra",
+    "Garvebhavi Palya",
+    "Kudlu Gate",
+    "Singasandra",
+    "Hosa Road",
+    "Parappana Agrahara",
+    "Basapura"
+];
+
+
+/* =========================================================
+   LOCATION VALIDATION
+   ========================================================= */
+
+function normalizeArea(area) {
+
+    return area
+        .toLowerCase()
+        .replace(/\./g, "")
+        .replace(/,/g, " ")
+        .replace(/\b(bangalore|bengaluru|karnataka)\b/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+
+function isValidBengaluruArea(location) {
+
+    const enteredArea = normalizeArea(location);
+
+    return bengaluruAreas.some(
+        area =>
+            normalizeArea(area) === enteredArea
+    );
+}
+
+
+/* =========================================================
+   INITIAL BIN DATA
+   ========================================================= */
 
 const initialBins = [
 
@@ -47,9 +190,12 @@ const initialBins = [
         type: "Organic",
         assignedTruck: "Truck 1"
     }
-
 ];
 
+
+/* =========================================================
+   INITIAL TRUCK DATA
+   ========================================================= */
 
 const initialTrucks = [
 
@@ -70,9 +216,12 @@ const initialTrucks = [
         route: "Whitefield",
         status: "InActive"
     }
-
 ];
 
+
+/* =========================================================
+   INITIAL EVENT DATA
+   ========================================================= */
 
 const initialEvents = [
 
@@ -91,195 +240,189 @@ const initialEvents = [
         location: "Indiranagar",
         truckCount: 1
     }
-
 ];
 
 
-// ==========================================
-// MAIN APP
-// ==========================================
+/* =========================================================
+   MAIN APP
+   ========================================================= */
 
 function App() {
 
     const [currentPage, setCurrentPage] =
         useState("welcome");
 
-
     const [bins, setBins] =
         useState(initialBins);
-
 
     const [trucks] =
         useState(initialTrucks);
 
-
     const [events, setEvents] =
         useState(initialEvents);
-
 
     const [feedback, setFeedback] =
         useState([]);
 
 
-    // Existing HTML sidebar buttons use these
+    function navigateTo(page) {
+
+        setCurrentPage(page);
+    }
+
+
     useEffect(() => {
 
-        window.navigateTo =
-            function (page) {
+        window.navigateTo = navigateTo;
 
-                setCurrentPage(page);
+        window.generateReport = function () {
 
-            };
+            openGeneratedReport(
+                bins,
+                trucks,
+                events
+            );
+        };
+
+    }, [bins, trucks, events]);
 
 
-        window.generateReport =
-            function () {
-
-                openGeneratedReport(
-                    bins,
-                    trucks,
-                    events
-                );
-
-            };
-
-    }, [
-        bins,
-        trucks,
-        events
-    ]);
+    let page;
 
 
     switch (currentPage) {
 
         case "statistics":
 
-            return createElement(
+            page = e(
                 StatisticsPage,
                 {
                     bins,
-                    navigateTo:
-                        setCurrentPage
+                    setBins,
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "addBin":
 
-            return createElement(
+            page = e(
                 AddBinPage,
                 {
                     bins,
                     setBins,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "events":
 
-            return createElement(
+            page = e(
                 EventsPage,
                 {
                     events,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "addEvent":
 
-            return createElement(
+            page = e(
                 AddEventPage,
                 {
                     events,
                     setEvents,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "truckRoutes":
 
-            return createElement(
+            page = e(
                 TruckRoutesPage,
                 {
                     trucks,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "feedback":
 
-            return createElement(
+            page = e(
                 FeedbackPage,
                 {
                     feedback,
                     setFeedback,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "viewFeedback":
 
-            return createElement(
+            page = e(
                 ViewFeedbackPage,
                 {
                     feedback,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         case "visualizeData":
 
-            return createElement(
+            page = e(
                 VisualizeDataPage,
                 {
                     bins,
-                    navigateTo:
-                        setCurrentPage
+                    navigateTo
                 }
             );
+
+            break;
 
 
         default:
 
-            return createElement(
-                WelcomePage
-            );
-
+            page = e(WelcomePage);
     }
 
+
+    return page;
 }
 
 
-// ==========================================
-// WELCOME PAGE
-// ==========================================
+/* =========================================================
+   WELCOME PAGE
+   ========================================================= */
 
 function WelcomePage() {
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        // =========================
-        // WELCOME HEADER
-        // =========================
-
-        createElement(
+        e(
 
             "header",
 
@@ -291,7 +434,7 @@ function WelcomePage() {
             },
 
 
-            createElement(
+            e(
 
                 "h1",
 
@@ -303,11 +446,10 @@ function WelcomePage() {
                 },
 
                 "Welcome to Waste Management Dashboard"
-
             ),
 
 
-            createElement(
+            e(
 
                 "p",
 
@@ -318,17 +460,11 @@ function WelcomePage() {
                 },
 
                 "Your efficient waste collection and management solution for smart cities"
-
             )
-
         ),
 
 
-        // =========================
-        // QUOTE SECTION
-        // =========================
-
-        createElement(
+        e(
 
             "main",
 
@@ -345,7 +481,7 @@ function WelcomePage() {
 
                     padding: "25px 20px",
 
-                    minHeight: "430px",
+                    minHeight: "380px",
 
                     background:
                         "linear-gradient(to right, #e0f7fa, #e8f5e9)",
@@ -353,16 +489,11 @@ function WelcomePage() {
                     borderRadius: "10px",
 
                     boxSizing: "border-box"
-
                 }
             },
 
 
-            // =========================
-            // QUOTE CARD
-            // =========================
-
-            createElement(
+            e(
 
                 "p",
 
@@ -397,156 +528,268 @@ function WelcomePage() {
                         borderRadius: "8px",
 
                         boxShadow:
-                            "0 4px 10px rgba(0, 0, 0, 0.10)",
+                            "0 4px 10px rgba(0,0,0,0.10)",
 
                         boxSizing: "border-box"
-
                     }
                 },
 
-                `"It is our collective and individual responsibility to
-                preserve and tend to the world in which we all live.
-                The earth is not ours to exploit but a gift to cherish
-                and protect."`
 
+                `"It is our collective and individual responsibility to preserve and tend to the world in which we all live.
+                The earth is not ours to exploit but a gift to cherish and protect."`
             )
-
         )
-
     );
-
 }
 
-// ==========================================
-// BIN STATISTICS
-// ==========================================
+
+/* =========================================================
+   BIN STATISTICS
+   ========================================================= */
 
 function StatisticsPage({
     bins,
+    setBins,
     navigateTo
 }) {
 
-    return createElement(
+    const [selectedBinId, setSelectedBinId] =
+        useState(null);
+
+
+    function deleteBin(id) {
+
+        const selectedBin =
+            bins.find(
+                bin => bin.id === id
+            );
+
+
+        if (!selectedBin) {
+
+            return;
+        }
+
+
+        const confirmDelete =
+            window.confirm(
+
+                `Are you sure you want to delete the bin in ${selectedBin.location}?`
+            );
+
+
+        if (!confirmDelete) {
+
+            return;
+        }
+
+
+        const updatedBins =
+            bins.filter(
+                bin =>
+                    bin.id !== id
+            );
+
+
+        setBins(updatedBins);
+
+        setSelectedBinId(null);
+
+        alert(
+            "Bin deleted successfully."
+        );
+    }
+
+
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Bin Statistics"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            ...bins.map(bin => {
+            bins.length === 0
 
-                let color = "green";
+                ? e(
+                    "p",
+                    null,
+                    "No bins available."
+                )
 
-
-                if (bin.level === "Full") {
-
-                    color = "red";
-
-                } else if (
-                    bin.level === "Half-Full"
-                ) {
-
-                    color = "orange";
-
-                }
+                : bins.map(bin => {
 
 
-                return createElement(
-
-                    "div",
-
-                    {
-                        key: bin.id,
-
-                        className:
-                            "bin-card",
-
-                        style: {
-                            backgroundColor:
-                                color
-                        }
-                    },
+                    let color;
 
 
-                    createElement(
-                        "h3",
-                        null,
-                        `Location: ${bin.location}`
-                    ),
+                    if (bin.level === "Full") {
+
+                        color = "red";
+
+                    }
+
+                    else if (
+                        bin.level === "Half-Full"
+                    ) {
+
+                        color = "orange";
+
+                    }
+
+                    else {
+
+                        color = "green";
+                    }
 
 
-                    createElement(
-                        "p",
-                        null,
-                        `Bin Level: ${bin.level}`
-                    ),
+                    return e(
+
+                        "div",
+
+                        {
+
+                            key: bin.id,
+
+                            className:
+                                "bin-card",
+
+                            style: {
+
+                                backgroundColor:
+                                    color,
+
+                                cursor:
+                                    "pointer",
+
+                                position:
+                                    "relative"
+                            },
 
 
-                    createElement(
-                        "p",
-                        null,
-                        `Bin Type: ${bin.type}`
-                    ),
+                            onClick: () =>
+
+                                setSelectedBinId(
+
+                                    selectedBinId === bin.id
+                                        ? null
+                                        : bin.id
+                                )
+                        },
 
 
-                    createElement(
-                        "p",
-                        null,
-                        `Assigned Truck: ${bin.assignedTruck}`
-                    )
+                        e(
 
-                );
+                            "h3",
+                            null,
 
-            }),
+                            `Location: ${bin.location}`
+                        ),
 
 
-            createElement(
+                        e(
+
+                            "p",
+                            null,
+
+                            `Bin Level: ${bin.level}`
+                        ),
+
+
+                        e(
+
+                            "p",
+                            null,
+
+                            `Bin Type: ${bin.type}`
+                        ),
+
+
+                        e(
+
+                            "p",
+                            null,
+
+                            `Assigned Truck: ${bin.assignedTruck}`
+                        ),
+
+
+                        selectedBinId === bin.id &&
+
+                        e(
+
+                            "div",
+
+                            {
+
+                                style: {
+                                    marginTop: "12px"
+                                },
+
+                                onClick: event =>
+                                    event.stopPropagation()
+                            },
+
+
+                            e(
+
+                                "button",
+
+                                {
+
+                                    type: "button",
+
+                                    onClick: () =>
+                                        deleteBin(bin.id)
+                                },
+
+                                "Delete Bin"
+                            )
+                        )
+                    );
+
+                }),
+
+
+            e(
 
                 "button",
 
                 {
+
+                    type: "button",
+
                     onClick: () =>
-                        navigateTo(
-                            "welcome"
-                        )
+                        navigateTo("welcome")
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// ADD BIN PAGE
-// ==========================================
+/* =========================================================
+   ADD BIN PAGE
+   ========================================================= */
 
 function AddBinPage({
     bins,
@@ -557,84 +800,77 @@ function AddBinPage({
     const [location, setLocation] =
         useState("");
 
+    const [binType, setBinType] =
+        useState("");
 
-    // Empty by default
-    const [type, setType] =
+    const [binLevel, setBinLevel] =
+        useState("");
+
+    const [assignedTruck, setAssignedTruck] =
         useState("");
 
 
-    // Empty by default
-    const [level, setLevel] =
-        useState("");
+    /*
+       All sections are CLOSED initially
+    */
 
+    const [showLocation, setShowLocation] =
+        useState(false);
 
-    // Empty by default
-    const [
-        assignedTruck,
-        setAssignedTruck
-    ] = useState("");
+    const [showType, setShowType] =
+        useState(false);
 
+    const [showLevel, setShowLevel] =
+        useState(false);
 
-    const [sections, setSections] =
-        useState({
-
-            location: false,
-
-            type: false,
-
-            level: false,
-
-            truck: false
-
-        });
-
-
-    function toggleSection(name) {
-
-        setSections({
-
-            ...sections,
-
-            [name]:
-                !sections[name]
-
-        });
-
-    }
+    const [showTruck, setShowTruck] =
+        useState(false);
 
 
     function addBin() {
 
+
+        /* LOCATION EMPTY */
+
         if (!location.trim()) {
 
             alert(
-                "Please provide the location for the bin."
+                "Please enter the bin location."
             );
 
             return;
-
         }
 
 
-        if (!type) {
+        /* BENGALURU VALIDATION */
+
+        if (!isValidBengaluruArea(location)) {
 
             alert(
-                "Please select a bin type."
+                "Area not found. Please enter a valid Bengaluru area."
             );
 
             return;
-
         }
 
 
-        if (!level) {
+        if (!binType) {
 
             alert(
-                "Please select a bin level."
+                "Please select the bin type."
             );
 
             return;
+        }
 
+
+        if (!binLevel) {
+
+            alert(
+                "Please select the bin level."
+            );
+
+            return;
         }
 
 
@@ -645,24 +881,84 @@ function AddBinPage({
             );
 
             return;
-
         }
 
+
+        /*
+           Get correct area name
+        */
+
+        const matchedArea =
+            bengaluruAreas.find(
+
+                area =>
+
+                    normalizeArea(area) ===
+                    normalizeArea(location)
+            );
+
+
+        const finalLocation =
+            matchedArea || location.trim();
+
+
+        /*
+           CHECK DUPLICATE BIN
+        */
+
+        const binAlreadyExists =
+            bins.some(
+
+                bin =>
+
+                    normalizeArea(bin.location) ===
+                    normalizeArea(finalLocation)
+            );
+
+
+        if (binAlreadyExists) {
+
+            alert(
+                "Bin already present in this area."
+            );
+
+            return;
+        }
+
+
+        /*
+           CREATE NEW BIN
+        */
 
         const newBin = {
 
             id:
-                bins.length + 1,
+
+                bins.length > 0
+
+                    ? Math.max(
+                        ...bins.map(
+                            bin => bin.id
+                        )
+                    ) + 1
+
+                    : 1,
+
 
             location:
-                location.trim(),
+                finalLocation,
 
-            type,
 
-            level,
+            type:
+                binType,
 
-            assignedTruck
 
+            level:
+                binLevel,
+
+
+            assignedTruck:
+                assignedTruck
         };
 
 
@@ -678,44 +974,41 @@ function AddBinPage({
 
 
         navigateTo(
-            "welcome"
+            "statistics"
         );
-
     }
 
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Add New Bin"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            // LOCATION
+            /* =================================================
+               LOCATION
+               ================================================= */
 
-            createElement(
+            e(
 
                 "div",
 
@@ -725,85 +1018,98 @@ function AddBinPage({
                 },
 
 
-                createElement(
+                e(
 
                     "button",
 
                     {
+
+                        type: "button",
+
                         className:
                             "toggle-btn",
 
                         onClick: () =>
-                            toggleSection(
-                                "location"
+                            setShowLocation(
+                                !showLocation
                             )
                     },
 
                     "Location"
-
                 ),
 
 
-                createElement(
+                showLocation &&
+
+                e(
 
                     "div",
 
                     {
+
                         className:
                             "form-content",
 
+                        /*
+                           This overrides old
+                           CSS display:none
+                        */
+
                         style: {
-
-                            display:
-                                sections.location
-                                    ? "block"
-                                    : "none"
-
+                            display: "block"
                         }
                     },
 
 
-                    createElement(
+                    e(
 
                         "label",
 
-                        null,
+                        {
+                            htmlFor:
+                                "bin-location"
+                        },
 
                         "Location:"
-
                     ),
 
 
-                    createElement(
+                    e(
 
                         "input",
 
                         {
-                            type: "text",
+
+                            type:
+                                "text",
+
+                            id:
+                                "bin-location",
 
                             placeholder:
-                                "Enter location",
+                                "Enter Bengaluru area",
 
                             value:
                                 location,
 
+
                             onChange:
                                 event =>
+
                                     setLocation(
                                         event.target.value
                                     )
                         }
-
                     )
-
                 )
-
             ),
 
 
-            // BIN TYPE
+            /* =================================================
+               BIN TYPE
+               ================================================= */
 
-            createElement(
+            e(
 
                 "div",
 
@@ -813,88 +1119,95 @@ function AddBinPage({
                 },
 
 
-                createElement(
+                e(
 
                     "button",
 
                     {
+
+                        type: "button",
+
                         className:
                             "toggle-btn",
 
                         onClick: () =>
-                            toggleSection(
-                                "type"
+                            setShowType(
+                                !showType
                             )
                     },
 
                     "Bin Type"
-
                 ),
 
 
-                createElement(
+                showType &&
+
+                e(
 
                     "div",
 
                     {
+
                         className:
                             "form-content",
 
                         style: {
-
-                            display:
-                                sections.type
-                                    ? "block"
-                                    : "none"
-
+                            display: "block"
                         }
                     },
 
 
-                    createElement(
+                    e(
 
                         "label",
 
-                        null,
+                        {
+                            htmlFor:
+                                "bin-type"
+                        },
 
                         "Bin Type:"
-
                     ),
 
 
-                    createElement(
+                    e(
 
                         "select",
 
                         {
-                            required: true,
+
+                            id:
+                                "bin-type",
 
                             value:
-                                type,
+                                binType,
+
 
                             onChange:
                                 event =>
-                                    setType(
+
+                                    setBinType(
                                         event.target.value
                                     )
                         },
 
 
-                        createElement(
+                        e(
 
                             "option",
 
                             {
+
                                 value: "",
+
                                 disabled: true
                             },
 
                             "Select bin type"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -904,11 +1217,10 @@ function AddBinPage({
                             },
 
                             "Organic"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -918,11 +1230,10 @@ function AddBinPage({
                             },
 
                             "Recyclable"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -932,19 +1243,17 @@ function AddBinPage({
                             },
 
                             "Non-recyclable"
-
                         )
-
                     )
-
                 )
-
             ),
 
 
-            // BIN LEVEL
+            /* =================================================
+               BIN LEVEL
+               ================================================= */
 
-            createElement(
+            e(
 
                 "div",
 
@@ -954,88 +1263,95 @@ function AddBinPage({
                 },
 
 
-                createElement(
+                e(
 
                     "button",
 
                     {
+
+                        type: "button",
+
                         className:
                             "toggle-btn",
 
                         onClick: () =>
-                            toggleSection(
-                                "level"
+                            setShowLevel(
+                                !showLevel
                             )
                     },
 
                     "Bin Level"
-
                 ),
 
 
-                createElement(
+                showLevel &&
+
+                e(
 
                     "div",
 
                     {
+
                         className:
                             "form-content",
 
                         style: {
-
-                            display:
-                                sections.level
-                                    ? "block"
-                                    : "none"
-
+                            display: "block"
                         }
                     },
 
 
-                    createElement(
+                    e(
 
                         "label",
 
-                        null,
+                        {
+                            htmlFor:
+                                "bin-level"
+                        },
 
                         "Bin Level:"
-
                     ),
 
 
-                    createElement(
+                    e(
 
                         "select",
 
                         {
-                            required: true,
+
+                            id:
+                                "bin-level",
 
                             value:
-                                level,
+                                binLevel,
+
 
                             onChange:
                                 event =>
-                                    setLevel(
+
+                                    setBinLevel(
                                         event.target.value
                                     )
                         },
 
 
-                        createElement(
+                        e(
 
                             "option",
 
                             {
+
                                 value: "",
+
                                 disabled: true
                             },
 
                             "Select bin level"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1045,11 +1361,10 @@ function AddBinPage({
                             },
 
                             "Full"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1059,11 +1374,10 @@ function AddBinPage({
                             },
 
                             "Half-Full"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1073,19 +1387,17 @@ function AddBinPage({
                             },
 
                             "Empty"
-
                         )
-
                     )
-
                 )
-
             ),
 
 
-            // ASSIGNED TRUCK
+            /* =================================================
+               ASSIGNED TRUCK
+               ================================================= */
 
-            createElement(
+            e(
 
                 "div",
 
@@ -1095,88 +1407,95 @@ function AddBinPage({
                 },
 
 
-                createElement(
+                e(
 
                     "button",
 
                     {
+
+                        type: "button",
+
                         className:
                             "toggle-btn",
 
                         onClick: () =>
-                            toggleSection(
-                                "truck"
+                            setShowTruck(
+                                !showTruck
                             )
                     },
 
                     "Assigned Truck"
-
                 ),
 
 
-                createElement(
+                showTruck &&
+
+                e(
 
                     "div",
 
                     {
+
                         className:
                             "form-content",
 
                         style: {
-
-                            display:
-                                sections.truck
-                                    ? "block"
-                                    : "none"
-
+                            display: "block"
                         }
                     },
 
 
-                    createElement(
+                    e(
 
                         "label",
 
-                        null,
+                        {
+                            htmlFor:
+                                "assigned-truck"
+                        },
 
                         "Assigned Truck:"
-
                     ),
 
 
-                    createElement(
+                    e(
 
                         "select",
 
                         {
-                            required: true,
+
+                            id:
+                                "assigned-truck",
 
                             value:
                                 assignedTruck,
 
+
                             onChange:
                                 event =>
+
                                     setAssignedTruck(
                                         event.target.value
                                     )
                         },
 
 
-                        createElement(
+                        e(
 
                             "option",
 
                             {
+
                                 value: "",
+
                                 disabled: true
                             },
 
                             "Select assigned truck"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1186,11 +1505,10 @@ function AddBinPage({
                             },
 
                             "Truck 1"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1200,11 +1518,10 @@ function AddBinPage({
                             },
 
                             "Truck 2"
-
                         ),
 
 
-                        createElement(
+                        e(
 
                             "option",
 
@@ -1214,35 +1531,42 @@ function AddBinPage({
                             },
 
                             "Truck 3"
-
                         )
-
                     )
-
                 )
-
             ),
 
 
-            createElement(
+            /* ADD BIN BUTTON */
+
+            e(
 
                 "button",
 
                 {
+
+                    type:
+                        "button",
+
                     onClick:
                         addBin
                 },
 
                 "Add Bin"
-
             ),
 
 
-            createElement(
+            /* BACK BUTTON */
+
+            e(
 
                 "button",
 
                 {
+
+                    type:
+                        "button",
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -1250,106 +1574,106 @@ function AddBinPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// EVENTS PAGE
-// ==========================================
+/* =========================================================
+   EVENTS PAGE
+   ========================================================= */
 
 function EventsPage({
     events,
     navigateTo
 }) {
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Manage Events"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            ...events.map(event =>
+            events.map(event =>
 
-                createElement(
+                e(
 
                     "div",
 
                     {
-                        key:
-                            event.id,
 
                         className:
-                            "event-card"
+                            "event-card",
+
+                        key:
+                            event.id
                     },
 
 
-                    createElement(
+                    e(
+
                         "h3",
                         null,
+
                         `Event Type: ${event.type}`
                     ),
 
 
-                    createElement(
+                    e(
+
                         "p",
                         null,
+
                         `Date: ${event.date}`
                     ),
 
 
-                    createElement(
+                    e(
+
                         "p",
                         null,
+
                         `Location: ${event.location}`
                     ),
 
 
-                    createElement(
+                    e(
+
                         "p",
                         null,
+
                         `Truck Count: ${event.truckCount}`
                     )
-
                 )
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "addEvent"
@@ -1357,15 +1681,15 @@ function EventsPage({
                 },
 
                 "Add Event"
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -1373,19 +1697,15 @@ function EventsPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// ADD EVENT
-// ==========================================
+/* =========================================================
+   ADD EVENT PAGE
+   ========================================================= */
 
 function AddEventPage({
     events,
@@ -1393,29 +1713,25 @@ function AddEventPage({
     navigateTo
 }) {
 
-    const [type, setType] =
+    const [eventType, setEventType] =
         useState("");
 
-
-    const [date, setDate] =
+    const [eventDate, setEventDate] =
         useState("");
-
 
     const [location, setLocation] =
         useState("");
 
-
-    const [
-        truckCount,
-        setTruckCount
-    ] = useState("");
+    const [truckCount, setTruckCount] =
+        useState("");
 
 
     function addEvent() {
 
+
         if (
-            !type.trim() ||
-            !date ||
+            !eventType.trim() ||
+            !eventDate ||
             !location.trim() ||
             !truckCount
         ) {
@@ -1425,25 +1741,60 @@ function AddEventPage({
             );
 
             return;
-
         }
+
+
+        if (!isValidBengaluruArea(location)) {
+
+            alert(
+                "Area not found. Please enter a valid Bengaluru area."
+            );
+
+            return;
+        }
+
+
+        const matchedArea =
+            bengaluruAreas.find(
+
+                area =>
+
+                    normalizeArea(area) ===
+                    normalizeArea(location)
+            );
 
 
         const newEvent = {
 
             id:
-                events.length + 1,
+
+                events.length > 0
+
+                    ? Math.max(
+                        ...events.map(
+                            event =>
+                                event.id
+                        )
+                    ) + 1
+
+                    : 1,
+
 
             type:
-                type.trim(),
+                eventType.trim(),
 
-            date,
+
+            date:
+                eventDate,
+
 
             location:
+                matchedArea ||
                 location.trim(),
 
-            truckCount
 
+            truckCount:
+                Number(truckCount)
         };
 
 
@@ -1461,51 +1812,56 @@ function AddEventPage({
         navigateTo(
             "events"
         );
-
     }
 
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Add New Event"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            createElement(
+            e(
+
                 "label",
-                null,
+
+                {
+                    htmlFor:
+                        "event-type"
+                },
+
                 "Event Type:"
             ),
 
 
-            createElement(
+            e(
 
                 "input",
 
                 {
+
+                    id:
+                        "event-type",
+
                     type:
                         "text",
 
@@ -1513,93 +1869,127 @@ function AddEventPage({
                         "Enter event type",
 
                     value:
-                        type,
+                        eventType,
+
 
                     onChange:
-                        e =>
-                            setType(
-                                e.target.value
+                        event =>
+
+                            setEventType(
+                                event.target.value
                             )
                 }
-
             ),
 
 
-            createElement(
+            e(
+
                 "label",
-                null,
+
+                {
+                    htmlFor:
+                        "event-date"
+                },
+
                 "Event Date:"
             ),
 
 
-            createElement(
+            e(
 
                 "input",
 
                 {
+
+                    id:
+                        "event-date",
+
                     type:
                         "date",
 
                     value:
-                        date,
+                        eventDate,
+
 
                     onChange:
-                        e =>
-                            setDate(
-                                e.target.value
+                        event =>
+
+                            setEventDate(
+                                event.target.value
                             )
                 }
-
             ),
 
 
-            createElement(
+            e(
+
                 "label",
-                null,
+
+                {
+                    htmlFor:
+                        "event-location"
+                },
+
                 "Event Location:"
             ),
 
 
-            createElement(
+            e(
 
                 "input",
 
                 {
+
+                    id:
+                        "event-location",
+
                     type:
                         "text",
 
                     placeholder:
-                        "Enter location",
+                        "Enter Bengaluru area",
 
                     value:
                         location,
 
+
                     onChange:
-                        e =>
+                        event =>
+
                             setLocation(
-                                e.target.value
+                                event.target.value
                             )
                 }
-
             ),
 
 
-            createElement(
+            e(
+
                 "label",
-                null,
+
+                {
+                    htmlFor:
+                        "truck-count"
+                },
+
                 "Truck Count:"
             ),
 
 
-            createElement(
+            e(
 
                 "input",
 
                 {
+
+                    id:
+                        "truck-count",
+
                     type:
                         "number",
 
-                    min: "1",
+                    min:
+                        "1",
 
                     placeholder:
                         "Enter number of trucks",
@@ -1607,17 +1997,18 @@ function AddEventPage({
                     value:
                         truckCount,
 
+
                     onChange:
-                        e =>
+                        event =>
+
                             setTruckCount(
-                                e.target.value
+                                event.target.value
                             )
                 }
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
@@ -1627,15 +2018,15 @@ function AddEventPage({
                 },
 
                 "Add Event"
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "events"
@@ -1643,90 +2034,81 @@ function AddEventPage({
                 },
 
                 "Back to Events"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// TRUCK ROUTES
-// ==========================================
+/* =========================================================
+   TRUCK ROUTES
+   ========================================================= */
 
 function TruckRoutesPage({
     trucks,
     navigateTo
 }) {
 
-    const [status, setStatus] =
+    const [statusFilter, setStatusFilter] =
         useState("All");
 
-
-    const [search, setSearch] =
+    const [searchText, setSearchText] =
         useState("");
 
 
     const filteredTrucks =
         trucks.filter(truck => {
 
-            const statusMatch =
 
-                status === "All" ||
+            const statusMatches =
 
-                truck.status === status;
+                statusFilter === "All" ||
+
+                truck.status === statusFilter;
 
 
-            const searchMatch =
+            const searchMatches =
 
                 truck.route
                     .toLowerCase()
                     .includes(
-                        search.toLowerCase()
+                        searchText.toLowerCase()
                     );
 
 
             return (
-                statusMatch &&
-                searchMatch
+                statusMatches &&
+                searchMatches
             );
-
         });
 
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Truck Routes"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            createElement(
+            e(
 
                 "section",
 
@@ -1736,84 +2118,104 @@ function TruckRoutesPage({
                 },
 
 
-                createElement(
+                e(
+
                     "label",
-                    null,
+
+                    {
+                        htmlFor:
+                            "route-status"
+                    },
+
                     "Filter by Status:"
                 ),
 
 
-                createElement(
+                e(
 
                     "select",
 
                     {
+
+                        id:
+                            "route-status",
+
                         value:
-                            status,
+                            statusFilter,
+
 
                         onChange:
-                            e =>
-                                setStatus(
-                                    e.target.value
+                            event =>
+
+                                setStatusFilter(
+                                    event.target.value
                                 )
                     },
 
 
-                    createElement(
+                    e(
+
                         "option",
+
                         {
-                            value:
-                                "All"
+                            value: "All"
                         },
+
                         "All"
                     ),
 
 
-                    createElement(
+                    e(
+
                         "option",
+
                         {
-                            value:
-                                "Active"
+                            value: "Active"
                         },
+
                         "Active"
                     ),
 
 
-                    createElement(
+                    e(
+
                         "option",
+
                         {
-                            value:
-                                "InActive"
+                            value: "InActive"
                         },
+
                         "InActive"
                     ),
 
 
-                    createElement(
+                    e(
+
                         "option",
+
                         {
-                            value:
-                                "Completed"
+                            value: "Completed"
                         },
+
                         "Completed"
                     ),
 
 
-                    createElement(
+                    e(
+
                         "option",
+
                         {
-                            value:
-                                "Pending"
+                            value: "Pending"
                         },
+
                         "Pending"
                     )
-
                 )
-
             ),
 
 
-            createElement(
+            e(
 
                 "section",
 
@@ -1823,18 +2225,28 @@ function TruckRoutesPage({
                 },
 
 
-                createElement(
+                e(
+
                     "label",
-                    null,
+
+                    {
+                        htmlFor:
+                            "search-route"
+                    },
+
                     "Search Route:"
                 ),
 
 
-                createElement(
+                e(
 
                     "input",
 
                     {
+
+                        id:
+                            "search-route",
+
                         type:
                             "text",
 
@@ -1842,21 +2254,21 @@ function TruckRoutesPage({
                             "Search by route name",
 
                         value:
-                            search,
+                            searchText,
+
 
                         onChange:
-                            e =>
-                                setSearch(
-                                    e.target.value
+                            event =>
+
+                                setSearchText(
+                                    event.target.value
                                 )
                     }
-
                 )
-
             ),
 
 
-            createElement(
+            e(
 
                 "section",
 
@@ -1866,47 +2278,61 @@ function TruckRoutesPage({
                 },
 
 
-                ...filteredTrucks.map(
-                    truck =>
+                filteredTrucks.length > 0
 
-                        createElement(
+                    ? filteredTrucks.map(
 
-                            "div",
+                        truck =>
 
-                            {
-                                key:
-                                    truck.id,
+                            e(
 
-                                className:
-                                    "truck-card"
-                            },
+                                "div",
 
+                                {
 
-                            createElement(
-                                "h3",
-                                null,
-                                `Route: ${truck.route}`
-                            ),
+                                    className:
+                                        "truck-card",
+
+                                    key:
+                                        truck.id
+                                },
 
 
-                            createElement(
-                                "p",
-                                null,
-                                `Status: ${truck.status}`
+                                e(
+
+                                    "h3",
+                                    null,
+
+                                    `Route: ${truck.route}`
+                                ),
+
+
+                                e(
+
+                                    "p",
+                                    null,
+
+                                    `Status: ${truck.status}`
+                                )
                             )
+                    )
 
-                        )
+                    : e(
 
-                )
+                        "p",
+                        null,
 
+                        "No truck routes found."
+                    )
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -1914,19 +2340,15 @@ function TruckRoutesPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// REPORT ISSUE
-// ==========================================
+/* =========================================================
+   FEEDBACK PAGE
+   ========================================================= */
 
 function FeedbackPage({
     feedback,
@@ -1934,26 +2356,26 @@ function FeedbackPage({
     navigateTo
 }) {
 
-    const [text, setText] =
+    const [feedbackText, setFeedbackText] =
         useState("");
 
 
     function submitFeedback() {
 
-        if (!text.trim()) {
+
+        if (!feedbackText.trim()) {
 
             alert(
                 "Please provide feedback before submitting."
             );
 
             return;
-
         }
 
 
         setFeedback([
             ...feedback,
-            text.trim()
+            feedbackText.trim()
         ]);
 
 
@@ -1965,61 +2387,61 @@ function FeedbackPage({
         navigateTo(
             "welcome"
         );
-
     }
 
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "Report an Issue"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            createElement(
+            e(
 
                 "textarea",
 
                 {
+
+                    id:
+                        "feedback-text",
+
                     placeholder:
                         "Enter your feedback or issue here",
 
                     value:
-                        text,
+                        feedbackText,
+
 
                     onChange:
-                        e =>
-                            setText(
-                                e.target.value
+                        event =>
+
+                            setFeedbackText(
+                                event.target.value
                             )
                 }
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
@@ -2029,15 +2451,15 @@ function FeedbackPage({
                 },
 
                 "Submit Feedback"
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -2045,107 +2467,91 @@ function FeedbackPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// VIEW FEEDBACK
-// ==========================================
+/* =========================================================
+   VIEW FEEDBACK
+   ========================================================= */
 
 function ViewFeedbackPage({
     feedback,
     navigateTo
 }) {
 
-    const feedbackContent =
-
-        feedback.length === 0
-
-            ?
-
-            createElement(
-
-                "p",
-
-                null,
-
-                "No feedback available"
-
-            )
-
-            :
-
-            feedback.map(
-                (item, index) =>
-
-                    createElement(
-
-                        "div",
-
-                        {
-                            key:
-                                index,
-
-                            className:
-                                "feedback-card"
-                        },
-
-
-                        createElement(
-                            "p",
-                            null,
-                            item
-                        )
-
-                    )
-
-            );
-
-
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
                 "h1",
                 null,
                 "View Feedback"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            feedbackContent,
+            feedback.length === 0
+
+                ? e(
+
+                    "p",
+                    null,
+
+                    "No feedback available"
+                )
+
+                : feedback.map(
+
+                    (item, index) =>
+
+                        e(
+
+                            "div",
+
+                            {
+
+                                className:
+                                    "feedback-card",
+
+                                key:
+                                    index
+                            },
 
 
-            createElement(
+                            e(
+
+                                "p",
+                                null,
+
+                                item
+                            )
+                        )
+                ),
+
+
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -2153,60 +2559,52 @@ function ViewFeedbackPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// VISUALIZE DATA
-// ==========================================
+/* =========================================================
+   VISUALIZE DATA
+   ========================================================= */
 
 function VisualizeDataPage({
     bins,
     navigateTo
 }) {
 
-    const chartReference =
+    const canvasRef =
         useRef(null);
 
 
     useEffect(() => {
 
-        const binLevels = {
+
+        const counts = {
 
             Full: 0,
 
             HalfFull: 0,
 
             Empty: 0
-
         };
 
 
         bins.forEach(bin => {
 
-            if (
-                bin.level === "Full"
-            ) {
 
-                binLevels.Full++;
+            if (bin.level === "Full") {
 
+                counts.Full++;
             }
 
 
             if (
-                bin.level ===
-                "Half-Full"
+                bin.level === "Half-Full"
             ) {
 
-                binLevels.HalfFull++;
-
+                counts.HalfFull++;
             }
 
 
@@ -2214,33 +2612,33 @@ function VisualizeDataPage({
                 bin.level === "Empty"
             ) {
 
-                binLevels.Empty++;
-
+                counts.Empty++;
             }
-
         });
-
-
-        const context =
-            chartReference
-                .current
-                .getContext("2d");
 
 
         const chart =
             new Chart(
-                context,
+
+                canvasRef.current,
+
                 {
 
-                    type: "bar",
+                    type:
+                        "bar",
+
 
                     data: {
 
                         labels: [
+
                             "Full",
+
                             "Half-Full",
+
                             "Empty"
                         ],
+
 
                         datasets: [
 
@@ -2249,118 +2647,123 @@ function VisualizeDataPage({
                                 label:
                                     "Number of Bins by Level",
 
+
                                 data: [
 
-                                    binLevels.Full,
+                                    counts.Full,
 
-                                    binLevels.HalfFull,
+                                    counts.HalfFull,
 
-                                    binLevels.Empty
-
+                                    counts.Empty
                                 ],
 
+
                                 backgroundColor: [
+
                                     "red",
+
                                     "orange",
+
                                     "green"
                                 ],
 
+
                                 borderColor: [
+
                                     "darkred",
+
                                     "darkorange",
+
                                     "darkgreen"
                                 ],
 
-                                borderWidth: 1
 
+                                borderWidth:
+                                    1
                             }
-
                         ]
-
                     },
 
 
                     options: {
+
+                        responsive:
+                            true,
+
 
                         scales: {
 
                             y: {
 
                                 beginAtZero:
-                                    true
+                                    true,
 
+
+                                ticks: {
+
+                                    stepSize:
+                                        1
+                                }
                             }
-
                         }
-
                     }
-
                 }
-
             );
 
 
         return () => {
 
             chart.destroy();
-
         };
+
 
     }, [bins]);
 
 
-    return createElement(
+    return e(
 
         React.Fragment,
-
         null,
 
 
-        createElement(
+        e(
 
             "header",
-
             null,
 
-            createElement(
+            e(
+
                 "h1",
                 null,
+
                 "Visualize Waste Data"
             )
-
         ),
 
 
-        createElement(
+        e(
 
             "main",
-
             null,
 
 
-            createElement(
+            e(
 
                 "canvas",
 
                 {
                     ref:
-                        chartReference,
-
-                    width:
-                        "400",
-
-                    height:
-                        "200"
+                        canvasRef
                 }
-
             ),
 
 
-            createElement(
+            e(
 
                 "button",
 
                 {
+
                     onClick: () =>
                         navigateTo(
                             "welcome"
@@ -2368,25 +2771,22 @@ function VisualizeDataPage({
                 },
 
                 "Back to Welcome Page"
-
             )
-
         )
-
     );
-
 }
 
 
-// ==========================================
-// REPORT
-// ==========================================
+/* =========================================================
+   GENERATE REPORT
+   ========================================================= */
 
 function openGeneratedReport(
     bins,
     trucks,
     events
 ) {
+
 
     const reportWindow =
         window.open(
@@ -2402,299 +2802,250 @@ function openGeneratedReport(
         );
 
         return;
-
     }
 
 
-    const binsReport =
-        bins.map(bin => `
+    const binsHtml =
+        bins.map(
 
-            <div class="report-item">
+            bin => `
 
-                <div>
-                    <strong>Location:</strong>
-                    ${bin.location}
+                <div class="report-card">
+
+                    <strong>
+                        ${bin.location}
+                    </strong>
+
+                    <p>
+                        Type: ${bin.type}
+                    </p>
+
+                    <p>
+                        Level: ${bin.level}
+                    </p>
+
+                    <p>
+                        Assigned Truck:
+                        ${bin.assignedTruck}
+                    </p>
+
                 </div>
 
-                <div>
-                    <strong>Bin Type:</strong>
-                    ${bin.type}
+            `
+        ).join("");
+
+
+    const trucksHtml =
+        trucks.map(
+
+            truck => `
+
+                <div class="report-card">
+
+                    <strong>
+                        ${truck.route}
+                    </strong>
+
+                    <p>
+                        Status:
+                        ${truck.status}
+                    </p>
+
                 </div>
 
-                <div>
-                    <strong>Bin Level:</strong>
-                    ${bin.level}
+            `
+        ).join("");
+
+
+    const eventsHtml =
+        events.map(
+
+            event => `
+
+                <div class="report-card">
+
+                    <strong>
+                        ${event.type}
+                    </strong>
+
+                    <p>
+                        Date:
+                        ${event.date}
+                    </p>
+
+                    <p>
+                        Location:
+                        ${event.location}
+                    </p>
+
+                    <p>
+                        Required Trucks:
+                        ${event.truckCount}
+                    </p>
+
                 </div>
 
-                <div>
-                    <strong>Assigned Truck:</strong>
-                    ${bin.assignedTruck}
-                </div>
-
-            </div>
-
-        `).join("");
-
-
-    const trucksReport =
-        trucks.map(truck => `
-
-            <div class="report-item">
-
-                <div>
-                    <strong>Route:</strong>
-                    ${truck.route}
-                </div>
-
-                <div>
-                    <strong>Status:</strong>
-                    ${truck.status}
-                </div>
-
-            </div>
-
-        `).join("");
-
-
-    const eventsReport =
-        events.map(event => `
-
-            <div class="report-item">
-
-                <div>
-                    <strong>Event Type:</strong>
-                    ${event.type}
-                </div>
-
-                <div>
-                    <strong>Date:</strong>
-                    ${event.date}
-                </div>
-
-                <div>
-                    <strong>Location:</strong>
-                    ${event.location}
-                </div>
-
-                <div>
-                    <strong>Truck Count:</strong>
-                    ${event.truckCount}
-                </div>
-
-            </div>
-
-        `).join("");
+            `
+        ).join("");
 
 
     reportWindow.document.write(`
 
         <!DOCTYPE html>
 
-        <html lang="en">
+        <html>
 
         <head>
-
-            <meta charset="UTF-8">
-
-            <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1.0"
-            >
 
             <title>
                 Waste Management Report
             </title>
 
 
-           <style>
+            <style>
 
-    body {
+                body {
 
-        margin: 0;
+                    font-family:
+                        Arial,
+                        sans-serif;
 
-        padding: 40px;
+                    background:
+                        #e9ece6;
 
-        font-family:
-            "Trebuchet MS",
-            Arial,
-            sans-serif;
+                    margin:
+                        0;
 
-        background-color:
-            #e9ece6;
+                    padding:
+                        30px;
 
-        color:
-            #333;
+                    color:
+                        #333;
+                }
 
-    }
 
+                .report-container {
 
-    .report-container {
+                    max-width:
+                        900px;
 
-        max-width:
-            900px;
+                    margin:
+                        auto;
 
-        margin:
-            0 auto;
+                    background:
+                        white;
 
-        background-color:
-            #ffffff;
+                    padding:
+                        30px;
 
-        padding:
-            40px;
+                    border-radius:
+                        12px;
 
-        border-radius:
-            12px;
+                    box-shadow:
+                        0 4px 15px
+                        rgba(0,0,0,0.10);
+                }
 
-        box-shadow:
-            0 5px 18px
-            rgba(0, 0, 0, 0.12);
 
-    }
+                h1 {
 
+                    background:
+                        #545b5a;
 
-    .main-heading {
+                    color:
+                        white;
 
-        background-color:
-            #545b5a;
+                    padding:
+                        20px;
 
-        color:
-            white;
+                    border-radius:
+                        8px;
 
-        text-align:
-            center;
+                    text-align:
+                        center;
 
-        padding:
-            22px;
+                    margin-top:
+                        0;
+                }
 
-        border-radius:
-            8px;
 
-        font-size:
-            36px;
+                h2 {
 
-        font-weight:
-            bold;
+                    color:
+                        #357f72;
 
-        letter-spacing:
-            0.7px;
+                    background:
+                        #d6e7e2;
 
-        margin-bottom:
-            40px;
+                    padding:
+                        12px 15px;
 
-    }
+                    border-left:
+                        5px solid
+                        #52ab98;
 
+                    border-radius:
+                        5px;
 
-    .section {
+                    margin-top:
+                        30px;
+                }
 
-        margin-bottom:
-            40px;
 
-    }
+                .report-grid {
 
+                    display:
+                        grid;
 
-    .section-heading {
+                    grid-template-columns:
+                        repeat(
+                            auto-fit,
+                            minmax(
+                                220px,
+                                1fr
+                            )
+                        );
 
-        color:
-            #357f72;
+                    gap:
+                        15px;
+                }
 
-        font-size:
-            27px;
 
-        font-weight:
-            bold;
+                .report-card {
 
-        padding:
-            10px 14px;
+                    background:
+                        #f7f9f8;
 
-        margin-bottom:
-            20px;
+                    padding:
+                        15px;
 
-        background-color:
-            #d6e7e2;
+                    border-radius:
+                        8px;
 
-        border-left:
-            5px solid #52ab98;
+                    border-left:
+                        4px solid
+                        #52ab98;
+                }
 
-        border-radius:
-            5px;
 
-    }
+                .report-card strong {
 
+                    color:
+                        #357f72;
 
-    .report-item {
+                    font-size:
+                        18px;
+                }
 
-        background-color:
-            #f7f9f8;
 
-        border:
-            1px solid #d4dfdc;
+                .report-card p {
 
-        border-left:
-            5px solid #6fa89c;
+                    margin:
+                        7px 0;
+                }
 
-        padding:
-            18px 20px;
+            </style>
 
-        margin-bottom:
-            15px;
-
-        border-radius:
-            7px;
-
-        font-size:
-            17px;
-
-        line-height:
-            1.9;
-
-    }
-
-
-    .report-item strong {
-
-        color:
-            #3c6f66;
-
-        font-size:
-            17px;
-
-        font-weight:
-            bold;
-
-    }
-
-
-    .report-item:hover {
-
-        background-color:
-            #eef5f2;
-
-    }
-
-
-    @media print {
-
-        body {
-
-            background:
-                white;
-
-            padding:
-                0;
-
-        }
-
-
-        .report-container {
-
-            box-shadow:
-                none;
-
-        }
-
-    }
-
-</style>
         </head>
 
 
@@ -2704,48 +3055,43 @@ function openGeneratedReport(
             <div class="report-container">
 
 
-                <div class="main-heading">
-
+                <h1>
                     Waste Management Report
+                </h1>
+
+
+                <h2>
+                    Bin Details
+                </h2>
+
+
+                <div class="report-grid">
+
+                    ${binsHtml}
 
                 </div>
 
 
-                <div class="section">
-
-                    <div class="section-heading">
-
-                        Bins Report
-
-                    </div>
-
-                    ${binsReport}
-
-                </div>
+                <h2>
+                    Truck Routes
+                </h2>
 
 
-                <div class="section">
+                <div class="report-grid">
 
-                    <div class="section-heading">
-
-                        Trucks Report
-
-                    </div>
-
-                    ${trucksReport}
+                    ${trucksHtml}
 
                 </div>
 
 
-                <div class="section">
+                <h2>
+                    Event Details
+                </h2>
 
-                    <div class="section-heading">
 
-                        Events Report
+                <div class="report-grid">
 
-                    </div>
-
-                    ${eventsReport}
+                    ${eventsHtml}
 
                 </div>
 
@@ -2756,25 +3102,29 @@ function openGeneratedReport(
         </body>
 
         </html>
-
     `);
 
 
     reportWindow.document.close();
-
 }
 
 
-// ==========================================
-// START REACT APPLICATION
-// ==========================================
+/* =========================================================
+   START REACT APPLICATION
+   ========================================================= */
 
 const root =
     ReactDOM.createRoot(
+
         document.getElementById(
             "app"
         )
     );
+
+
+root.render(
+    e(App)
+);
 
 
 root.render(
