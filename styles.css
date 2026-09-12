@@ -1,0 +1,447 @@
+/* =====================================
+   BASIC PAGE STYLES
+===================================== */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+    background-color: #E9ECE6;
+}
+
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.sidebar {
+    width: 20%;
+    background-color: #545B5A;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.sidebar header {
+    background-color: #52ab98;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.sidebar h1 {
+    text-align: center;
+    margin: 0;
+}
+
+
+.sidebar nav {
+    margin-top: 30px;
+}
+
+
+/* Sidebar Buttons */
+.sidebar nav button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+
+    background-color: #545B5A;
+    color: white;
+
+    border: none;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.sidebar nav button:hover {
+    background-color: #16a085;
+}
+
+
+/* =====================================
+   MAIN CONTENT
+===================================== */
+
+.main-content {
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+header {
+    background-color: #6f9f95;
+    color: white;
+
+    padding: 20px;
+
+    margin-bottom: 25px;
+
+    text-align: center;
+
+    border-radius: 7px;
+}
+header h1 {
+    font-size: 38px;
+
+    font-family: "Trebuchet MS", Arial, sans-serif;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    text-align: center;
+
+    margin: 0;
+}
+
+/* =====================================
+   GENERAL BUTTON
+===================================== */
+button {
+    padding: 12px 20px;
+
+    font-size: 18px;
+
+    background-color: #52ab98;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    margin-top: 20px;
+
+    margin-right: 10px;
+
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #357f72;
+}
+
+
+
+
+/* =====================================
+   BIN CARDS
+===================================== */
+
+.bin-card {
+    padding: 15px;
+    margin-bottom: 10px;
+
+    border-radius: 5px;
+
+    color: white;
+}
+
+
+.bin-card h3,
+.bin-card p {
+    margin: 5px 0;
+}
+
+
+/* =====================================
+   WELCOME PAGE
+===================================== */
+
+.dashboard-content {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+}
+
+
+/* =====================================
+   ADD BIN FORM
+===================================== */
+
+.form-section {
+    margin-bottom: 10px;
+}
+
+
+.form-content {
+    display: none;
+
+    padding: 10px;
+}
+
+
+/* Toggle buttons */
+
+button.toggle-btn {
+    padding: 10px;
+
+    background-color: #d6e7e2;
+
+    color: #2f5f56;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    border: 1px solid #a9c9c0;
+
+    border-radius: 5px;
+
+    margin: 5px 0;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    width: 100%;
+
+    transition: background-color 0.3s ease;
+}
+
+button.toggle-btn:hover {
+    background-color: #bfd9d1;
+}
+
+/* =====================================
+   FORMS
+===================================== */
+
+form {
+    font-size: 18px;
+}
+
+
+label {
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 18px;
+}
+
+
+input,
+select {
+    width: 100%;
+
+    padding: 10px;
+
+    margin-top: 5px;
+
+    font-size: 16px;
+
+    box-sizing: border-box;
+
+    border-radius: 5px;
+
+    border: 1px solid #ccc;
+
+    background-color: white;
+}
+
+
+/* Placeholder appearance */
+
+input::placeholder {
+    color: #777;
+}
+
+
+/* Select placeholder */
+
+select:invalid {
+    color: #777;
+}
+
+
+select option {
+    color: black;
+}
+
+
+/* =====================================
+   TEXT AREA
+===================================== */
+
+textarea {
+    width: 100%;
+
+    min-height: 150px;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    resize: vertical;
+}
+
+
+/* =====================================
+   EVENT CARDS
+===================================== */
+
+.event-card {
+    border: 2px solid black;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+    border-radius: 8px;
+
+    background-color: white;
+
+    font-size: 18px;
+}
+
+
+.event-card h3 {
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+.event-card p {
+    margin: 5px 0;
+}
+
+
+/* =====================================
+   TRUCK ROUTES
+===================================== */
+
+.filter-section,
+.search-section {
+    margin: 20px 0;
+
+    font-size: 18px;
+}
+
+
+.truck-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(250px, 1fr)
+        );
+
+    gap: 20px;
+
+    padding: 20px 0;
+}
+
+
+.truck-card {
+    background-color: #f4f4f4;
+
+    padding: 20px;
+
+    border: 2px solid #000;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.1);
+
+    font-size: 18px;
+}
+
+
+.truck-card h3 {
+    font-size: 22px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =====================================
+   FEEDBACK
+===================================== */
+
+.feedback-card {
+    background-color: white;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    border-radius: 8px;
+
+    border: 1px solid #ccc;
+}
+
+
+/* =====================================
+   CHART
+===================================== */
+
+.chart-container {
+    width: 80%;
+
+    margin: 0 auto;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 768px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+
+    .sidebar {
+        width: 100%;
+    }
+
+
+    .main-content {
+        width: 100%;
+    }
+
+
+    .truck-cards {
+        grid-template-columns: 1fr;
+    }
+
+}

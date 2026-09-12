@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Waste Management Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- React -->
+    <script
+        crossorigin
+        src="https://unpkg.com/react@18/umd/react.development.js">
+    </script>
+
+    <!-- React DOM -->
+    <script
+        crossorigin
+        src="https://unpkg.com/react-dom@18/umd/react-dom.development.js">
+    </script>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <!-- Sidebar -->
+
+        <div class="sidebar">
+
+            <header>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+            </header>
+
+
+            <nav>
+
+                <button
+                    onclick="navigateTo('statistics')"
+                >
+                    View Bin Statistics
+                </button>
+
+
+                <button
+                    onclick="navigateTo('addBin')"
+                >
+                    Add New Bin
+                </button>
+
+
+                <button
+                    onclick="navigateTo('events')"
+                >
+                    Manage Events
+                </button>
+
+
+                <button
+                    onclick="navigateTo('truckRoutes')"
+                >
+                    View Truck Routes
+                </button>
+
+
+                <button
+                    onclick="generateReport()"
+                >
+                    Generate Report
+                </button>
+
+
+                <button
+                    onclick="navigateTo('feedback')"
+                >
+                    Report an Issue
+                </button>
+
+
+                <button
+                    onclick="navigateTo('viewFeedback')"
+                >
+                    View Feedback
+                </button>
+
+
+                <button
+                    onclick="navigateTo('visualizeData')"
+                >
+                    Visualize Data
+                </button>
+
+            </nav>
+
+        </div>
+
+
+        <!-- Main Content -->
+
+        <div class="main-content">
+
+            <div id="app"></div>
+
+        </div>
+
+    </div>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
