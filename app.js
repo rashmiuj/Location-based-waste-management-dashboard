@@ -3125,8 +3125,3 @@ const root =
 root.render(
     e(App)
 );
-
-
-root.render(
-    createElement(App)
-);
